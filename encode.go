@@ -53,9 +53,10 @@ type Encoder struct {
 	w   writer
 	buf []byte
 
-	sortMapKeys   bool
-	structAsArray bool
-	useJSONTag    bool
+	sortMapKeys   			bool
+	structAsArray 			bool
+	structAsAndroidVersion 	bool
+	useJSONTag    			bool
 }
 
 // NewEncoder returns a new encoder that writes to w.
@@ -82,6 +83,12 @@ func (e *Encoder) SortMapKeys(v bool) *Encoder {
 // StructAsArray causes the Encoder to encode Go structs as MessagePack arrays.
 func (e *Encoder) StructAsArray(v bool) *Encoder {
 	e.structAsArray = v
+	return e
+}
+
+// StructAsArray causes the Encoder to encode Go structs as MessagePack arrays.
+func (e *Encoder) StructAsAndroidVersion(v bool) *Encoder {
+	e.structAsAndroidVersion = v
 	return e
 }
 

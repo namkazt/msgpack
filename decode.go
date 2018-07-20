@@ -44,8 +44,9 @@ type Decoder struct {
 	extLen int
 	rec    []byte // accumulates read data if not nil
 
-	useLoose   bool
-	useJSONTag bool
+	useLoose   		bool
+	useJSONTag 		bool
+	useAsAndroid 	bool
 
 	decodeMapFunc func(*Decoder) (interface{}, error)
 }
@@ -58,7 +59,6 @@ type Decoder struct {
 func NewDecoder(r io.Reader) *Decoder {
 	d := &Decoder{
 		decodeMapFunc: decodeMap,
-
 		buf: makeBuffer(),
 	}
 	d.resetReader(r)
@@ -79,6 +79,11 @@ func (d *Decoder) UseDecodeInterfaceLoose(flag bool) {
 // if there is no msgpack tag.
 func (d *Decoder) UseJSONTag(v bool) *Decoder {
 	d.useJSONTag = v
+	return d
+}
+
+func (d *Decoder) UseAsAndroid(v bool) *Decoder {
+	d.useAsAndroid = v
 	return d
 }
 

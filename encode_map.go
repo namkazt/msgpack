@@ -140,7 +140,10 @@ func encodeStructValue(e *Encoder, strct reflect.Value) error {
 
 	if e.structAsArray || structFields.AsArray {
 		return encodeStructValueAsArray(e, strct, structFields.List)
+	}else if e.structAsAndroidVersion {
+		return encodeStructValueAsAndroidVersion(e, strct, structFields.List)
 	}
+
 	fields := structFields.OmitEmpty(strct)
 
 	if err := e.EncodeMapLen(len(fields)); err != nil {
@@ -156,6 +159,19 @@ func encodeStructValue(e *Encoder, strct reflect.Value) error {
 		}
 	}
 
+	return nil
+}
+
+func encodeStructValueAsAndroidVersion(e *Encoder, strct reflect.Value, fields []*field) error {
+	// simple just disable this
+	//if err := e.EncodeArrayLen(len(fields)); err != nil {
+	//	return err
+	//}
+	for _, f := range fields {
+		if err := f.EncodeValue(e, strct); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

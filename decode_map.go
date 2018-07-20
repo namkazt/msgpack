@@ -220,6 +220,10 @@ func (d *Decoder) skipMap(c codes.Code) error {
 }
 
 func decodeStructValue(d *Decoder, v reflect.Value) error {
+	if d.useAsAndroid {
+		return decodeStructValueAsAndroid(d, v)
+	}
+
 	c, err := d.readCode()
 	if err != nil {
 		return err
@@ -285,5 +289,20 @@ func decodeStructValue(d *Decoder, v reflect.Value) error {
 		}
 	}
 
+	return nil
+}
+
+func decodeStructValueAsAndroid(d *Decoder, v reflect.Value) error {
+	var fields *fields
+	if d.useJSONTag {
+		fields = jsonStructs.Fields(v.Type())
+	} else {
+		fields = structs.Fields(v.Type())
+	}
+	for _, f := range fields.List {
+		if err := f.DecodeValue(d, v); err != nil {
+			return err
+		}
+	}
 	return nil
 }
