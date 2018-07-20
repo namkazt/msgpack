@@ -42,6 +42,13 @@ func (w *byteWriter) WriteString(s string) (int, error) {
 	return w.Write(w.buf)
 }
 
+// shortcut Marshal returns the MessagePack encoding of v for android version
+func MarshalAndroid(v ...interface{}) ([]byte, error) {
+	var buf bytes.Buffer
+	err := NewEncoder(&buf).StructAsAndroidVersion(true).Encode(v...)
+	return buf.Bytes(), err
+}
+
 // Marshal returns the MessagePack encoding of v.
 func Marshal(v ...interface{}) ([]byte, error) {
 	var buf bytes.Buffer
