@@ -30,6 +30,11 @@ func makeBuffer() []byte {
 	return make([]byte, 0, 64)
 }
 
+// Unmarshal for android data version
+func UnmarshalAndroid(data []byte, v ...interface{}) error {
+	return NewDecoder(bytes.NewReader(data)).UseAsAndroid(true).Decode(v...)
+}
+
 // Unmarshal decodes the MessagePack-encoded data and stores the result
 // in the value pointed to by v.
 func Unmarshal(data []byte, v ...interface{}) error {
